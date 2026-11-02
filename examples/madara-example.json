@@ -1,0 +1,14 @@
+{
+  "name": "قالب Madara - ضع عنوان موقعك",
+  "baseUrl": "https://example.org",
+  "adult": false,
+  "listingPath": "/manga/",
+  "searchPath": "/?s={query}&post_type=wp-manga",
+  "itemSelector": ".page-item-detail, .c-tabs-item__content",
+  "titleSelector": ".post-title a, h3 a",
+  "linkSelector": ".post-title a, h3 a",
+  "coverSelector": "img",
+  "chapterSelector": ".wp-manga-chapter a",
+  "pageSelector": ".reading-content img",
+  "nextSelector": ""
+}
