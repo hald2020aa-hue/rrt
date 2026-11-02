@@ -80,7 +80,7 @@ class MainActivity : Activity() {
         add(bar, text("✦  $title", 24f, mint, true), 3)
         add(bar, text(subtitle, 13f, muted), 0)
         root.addView(bar)
-        val scroll = ScrollView(this).apply { fillViewport = true }
+        val scroll = ScrollView(this).apply { setFillViewport(true) }
         val body = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; padding(this, 17, 8) }
         scroll.addView(body)
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
