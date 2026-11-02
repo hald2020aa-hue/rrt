@@ -6,8 +6,8 @@ android {
         applicationId = "com.rrt.neonreader"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 3
+        versionName = "0.3.0"
     }
     buildTypes { release { isMinifyEnabled = false } }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -17,4 +17,5 @@ dependencies {
     implementation("org.jsoup:jsoup:1.20.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+    testImplementation("junit:junit:4.13.2")
 }

@@ -1,46 +1,64 @@
-# RRT Neon Reader — Kotlin Android app
+# RRT Neon Reader v0.3 — قارئ مانجا ومانهوا
 
-قارئ Android مستقل للمـانجا والمانهوا، يدعم المصادر المخصصة بما فيها تصنيفات 18+ بإعداد اختياري، وقارئ فصول وتنزيل صورها محليًا.
+مشروع Android مستقل بلغة Kotlin. أُعيد تطوير واجهاته بناءً على مراجعة فيديوهات المستخدم، مع الاستفادة من تحليل ملفات APK لفهم المتطلبات الوظيفية **دون نسخ الكود المستخرج أو تعطيل قيود الترخيص**.
 
-## Build exclusively on GitHub (without Android Studio)
+## وظائف النسخة الحالية
 
-1. Upload the complete contents of this folder to the **root** of `hald2020aa-hue/rrt` (not under a nested directory).
-2. Navigate to **Actions** → **RRT Neon Reader - Build APK** → **Run workflow** (also runs on push to main).
-3. After a successful job, open **Artifacts** and download `RRT-NeonReader-debug-APK`; unzip and install `app-debug.apk`.
-4. The file is a **debug-signed APK** for testing only. To distribute publicly, configure secure release signing.
+- قائمة جانبية قابلة للفتح، وشريط سفلي للتنقل (الرئيسية، المصادر، المكتبة، التنزيلات، الإعدادات).
+- شبكة أغلفة مع عرض متكيف للأجهزة العريضة والهواتف القابلة للطي.
+- إضافة عنوان موقع HTTPS، مع اكتشاف أولي لقالب Madara/WordPress أو Themesia أو قالب HTML عام.
+- تعديل جميع مسارات ومحددات CSS يدويًا، واختبار الموقع وتمكينه أو إيقافه.
+- خيار إظهار المصادر 18+ منفصل، مغلق افتراضيًا. لا توجد قائمة حظر على أسماء المواقع أو تصنيفها.
+- البحث داخل المصدر والبحث في المصادر المضافة، وعرض الأعمال وفصولها.
+- القارئ الرأسي والأفقي، حفظ تقدم الصفحات، الانتقال بين فصول القائمة، القراءة دون اتصال بعد التنزيل.
+- المفضلة، سجل القراءة، إحصائيات محلية بسيطة، استيراد/تصدير المصادر JSON.
+- اختبارات Kotlin/JUnit أساسية لأسماء العناوين والقوالب، وبناء GitHub Actions.
 
-If using Termux and a GitHub token/login already configured:
+## حدود التنفيذ
+
+1. **ليس نسخة مطابقة للتطبيق الأصلي.** لم تُنقل كل الشاشات والوظائف العميقة الموجودة فيه، مثل المزامنة السحابية ومشغل JavaScript التفاعلي والتصنيفات المعتمدة على API وشاشة تنزيلات متقدمة.
+2. ليس هناك ضمان أن إضافة أي رابط تعني أن الفصول والصفحات ستعمل. كل موقع يحتاج محولًا صحيحًا أو محددات CSS ملائمة، وقد يغيّر بنيته في أي وقت.
+3. لا يحل CAPTCHA ولا يتجاوز تسجيل الدخول أو Cloudflare أو قيود النفاذ أو حقوق النشر. إذا ظهرت صفحة تحقق، يعرض تشخيصًا بدل إخفاء الخطأ.
+4. التطبيق يعتمد الآن على صفحات HTML العامة؛ المصادر التي تتطلب JavaScript أو واجهات API خاصة تحتاج تطوير محولات إضافية.
+5. **لا يوجد APK جاهز في هذا الأرشيف**. لم نتمكن من تجميع المشروع محليًا لعدم توفر Android SDK وGradle. سيُختبر البناء في GitHub Actions بعد رفعه.
+
+## تحديث المستودع الحالي من Termux
+
+افترض أن مشروع `rrt` الحالي موجود في `~/rrt-neon-reader`، وأنك نزّلت `rrt-neon-reader-v2.zip` إلى تنزيلات الهاتف.
 
 ```bash
-pkg install -y git unzip
-unzip rrt-neon-reader.zip -d $HOME/rrt-work
-cd $HOME/rrt-work/rrt-neon-reader
-git init
-git branch -M main
-git remote add origin https://github.com/hald2020aa-hue/rrt.git
-git add .
-git commit -m "Initial RRT Neon Reader Kotlin app"
-git push -u origin main
+cd ~/rrt-neon-reader
+git status --short
+git pull --ff-only origin main
+unzip -o ~/storage/downloads/rrt-neon-reader-v2.zip -d ~
+cd ~/rrt-neon-reader
+git add -A
+git commit -m "RRT v0.2 — UI and flexible source reader"
+git push origin main
 ```
 
-Use GitHub CLI or git credential manager authentication; **never paste a token in chat or commit credentials into the repository**.
+في حالة وجود تغييرات محلية، احفظها أولًا بدل تجاوزها. سيؤدي push إلى تشغيل بناء GitHub Actions على `main`.
 
-## Source configuration
+## التوافق والبناء
 
-Open `+ إضافة مصدر جديد`, customize the site URL and CSS selectors, or import a JSON file. `examples/madara-example.json` is a TEMPLATE with a placeholder URL, not a confirmed source. Real sites differ; no automatic guarantee of compatibility.
+- Android Gradle Plugin 8.9.2 / Kotlin 2.0.21 / Gradle 8.11.1 / Java 17
+- `compileSdk 35`, `minSdk 26`, `targetSdk 34`
+- بناء `debug`: `gradle :app:assembleDebug :app:testDebugUnitTest`
+- الحزمة: `com.rrt.neonreader`; النسخة: `0.2.0`
+- ملف APK بعد نجاح البناء: `Actions -> RRT Neon Reader - Build APK -> Artifacts`
 
-### Current features
+## الخصوصية والحقوق
 
-- JSON source definitions; HTTPS only; configurable Madara-like CSS adapters.
-- Optional 18+ source visibility (off by default); no blanket domain word blacklist.
-- Catalog, search per source, global search, favorites, chapter list, vertical image reader.
-- Offline chapter images; file directory is app-specific external storage.
-- Arabic neon styling, supports right-to-left and Android foldables.
+الفصول المخزّنة تحفظ في مجلد خاص بالتطبيق ولا تُرفع إلى أي خادم من المشروع. استخدم فقط المصادر والمواد التي يحق لك الوصول إليها وتنزيلها. لا ترفع ملفات APK المفكوكة التي قد تحتوي على كود أو موارد محمية إلى مستودع GitHub عام.
 
-### Limitations
+## تحديث v0.3 — إضافة جميع المواقع بغض النظر عن تصنيف المحتوى
 
-No CAPTCHA/Cloudflare bypass, no scripts-only or API-only extraction without dedicated adapters, no guaranteed compatibility with every website, no continuous background downloads. Check `docs/IMPLEMENTATION_AR.md`.
+- **حفظ بدون فحص**: يقبل أي عنوان HTTPS عام صحيح دون تحليل محتواه، سواء محتوى بالغين أو غيره.
+- **حفظ ثم كشف تلقائي**: يُسجل الموقع أولًا، ثم يحاول تحديد القالب، دون حذف المصدر إذا فشل الاتصال أو ظهرت صفحة حماية.
+- اختيار الاسم اختياري؛ يُستنتج من اسم نطاق الموقع.
+- إضافة **فتح الموقع في المتصفح** داخل خيارات المصدر عند فشل تحليل الصفحات.
+- اختبارات JUnit لعدم رفض المواقع بسبب تصنيفها؛ هذه اختبارات قبول روابط فقط ولا تؤكد إمكانية تنزيل الفصول.
+- يبقى إظهار مصادر 18+ مغلقًا افتراضيًا حتى يفعله المستخدم من الإعدادات.
+- يتطلب عنوان HTTPS؛ لا توجد قائمة حظر أو مرشحات كلمات للمواقع، ولا يجري تجاوز تسجيل الدخول أو التحقق الأمني.
 
-- Kotlin 2.0.21 / AGP 8.9.2 / Gradle 8.11.1 / Java 17 / Android SDK 35.
-- minSdk 26, targetSdk 34, package `com.rrt.neonreader`.
-- The original extracted APK code, proprietary icons, branding and licensing components are not bundled.
+النسخة الجديدة مستقلة وليست تعديلًا مباشرًا على ملف APK المملوك لطرف آخر.

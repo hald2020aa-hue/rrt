@@ -32,18 +32,16 @@ jobs:
             echo "Android SDK manager not found in $SDK_ROOT" >&2
             exit 1
           fi
-          echo "SDK: $SDK_ROOT"
-          echo "SDK manager: $SDKMANAGER"
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-35' 'build-tools;35.0.0'
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-      - name: Build debug APK
-        run: gradle --no-daemon :app:assembleDebug --stacktrace
+      - name: Build and test APK
+        run: gradle --no-daemon :app:assembleDebug :app:testDebugUnitTest --stacktrace
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: RRT-NeonReader-debug-APK
+          name: RRT-NeonReader-v0.3-debug
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
